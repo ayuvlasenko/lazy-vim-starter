@@ -13,5 +13,7 @@ vim.opt.hlsearch = true
 vim.opt.wrapscan = true
 vim.opt.colorcolumn = "81"
 vim.opt.belloff = "all"
+vim.opt.title = true
+vim.opt.titlestring = [[%{fnamemodify(getcwd(), ':t')}]]
 
 vim.g.mapleader = " "
