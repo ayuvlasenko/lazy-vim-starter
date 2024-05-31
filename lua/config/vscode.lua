@@ -10,12 +10,13 @@ opt.ignorecase = true
 opt.smartcase = true
 opt.hlsearch = false
 opt.wrapscan = true
+opt.scrolloff = 5
 
 map("n", "<C-j>", "i<CR><Esc>^", { desc = "Break a line" })
 map(
   "n",
   "<leader>lr",
-  [[<Cmd>lua require('vscode-neovim').call('editor.action.rename')<CR>]],
+  [[<Cmd>lua require('vscode').call('editor.action.rename')<CR>]],
   { noremap = true, desc = "Rename" }
 )
 
@@ -36,19 +37,18 @@ map("v", ">", ">gv", { desc = "Indent right" })
 map(
   "i",
   "<C-u>",
-  [[<Cmd>lua require('vscode-neovim').call('editor.action.inlineSuggest.commit')<CR>]],
+  [[<Cmd>lua require('vscode').call('editor.action.inlineSuggest.commit')<CR>]],
   { noremap = true, desc = "Accept Copilot suggestion" }
 )
 map(
   "i",
   "<C-a>",
-  [[<Cmd>lua require('vscode-neovim').call('editor.action.inlineSuggest.acceptNextWord')<CR>]],
+  [[<Cmd>lua require('vscode').call('editor.action.inlineSuggest.acceptNextWord')<CR>]],
   { noremap = true, desc = "Accept next word from Copilot suggestion" }
 )
 
-map(
-  "n",
-  "<leader>e",
-  [[<Cmd>lua require('vscode-neovim').call('workbench.view.explorer')<CR>]],
-  { noremap = true, desc = "Open files explorer" }
-)
+-- map("n", "<leader>e", function()
+--   require("vscode").eval_async([[
+--   logger.info(vscode.window.state)
+--     ]])
+-- end)

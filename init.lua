@@ -1,5 +1,5 @@
 if vim.g.vscode then
-  -- bootstrap vscode-neovim
+  -- bootstrap vscode
   require("config.vscode")
 else
   -- bootstrap lazy.nvim, LazyVim and your plugins
