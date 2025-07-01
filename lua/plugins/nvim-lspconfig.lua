@@ -4,5 +4,6 @@ return {
     servers = {
       prismals = {},
     },
+    inlay_hints = { enabled = false },
   },
 }
