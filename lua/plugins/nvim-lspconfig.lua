@@ -9,10 +9,18 @@ return {
             tsserver = {
               maxTsServerMemory = 16184,
             },
+            updateImportsOnFileMove = { enabled = "always" },
+            preferences = {
+              autoImportFileExcludePatterns = { "**/dist/**", "**/build/**" },
+            },
           },
           typescript = {
             tsserver = {
               maxTsServerMemory = 16184,
+            },
+            updateImportsOnFileMove = { enabled = "always" },
+            preferences = {
+              autoImportFileExcludePatterns = { "**/dist/**", "**/build/**" },
             },
           },
         },
