@@ -4,6 +4,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Working Rules
 
+**IMPORTANT: Before suggesting ANY configuration option, keybinding, or plugin setting, you MUST verify it exists by checking the internet (official docs, GitHub README, GitHub issues/discussions, or source code). NEVER guess or infer option names, key mappings, or behavior. If you cannot verify it, say so explicitly instead of guessing.**
+
 Before implementing fixes or new features, always check the official docs first:
 - [LazyVim docs](https://www.lazyvim.org/) for extras, plugin specs, and keymaps
 - Plugin-specific docs (GitHub README, wiki) for configuration options
