@@ -27,6 +27,18 @@ Plugin customizations are **overrides on top of LazyVim**, not standalone config
 - **Neo-tree**: `h`/`l` for vim-style directory navigation, hidden files visible, narrow 35-col window.
 - **Snacks**: Scroll animation disabled.
 
+## Clean Reset
+
+To wipe all plugins, caches, and state (config in `~/.config/nvim` is preserved):
+
+```bash
+rm -rf ~/.local/share/nvim   # plugins and plugin data
+rm -rf ~/.cache/nvim          # lazy.nvim cache, treesitter cache, etc.
+rm -rf ~/.local/state/nvim    # shada, swap files, etc.
+```
+
+Next nvim launch will re-bootstrap lazy.nvim and reinstall everything.
+
 ## Adding a New Plugin Override
 
 Create `lua/plugins/<plugin-name>.lua` returning a lazy.nvim spec table. The `opts` table deep-merges with LazyVim's defaults — you only need to specify what you're changing.
