@@ -14,7 +14,6 @@ vim.keymap.set("n", "<leader>cw", function()
     file:write(word .. "\n")
     file:close()
     vim.notify("Added '" .. word .. "' to cspell dictionary", vim.log.levels.INFO)
-    vim.cmd("e!")
     require("lint").try_lint()
   end
 end, { desc = "Add word to cspell dictionary" })
