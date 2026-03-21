@@ -2,6 +2,13 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Working Rules
+
+Before implementing fixes or new features, always check the official docs first:
+- [LazyVim docs](https://www.lazyvim.org/) for extras, plugin specs, and keymaps
+- Plugin-specific docs (GitHub README, wiki) for configuration options
+- Never guess at option names, API calls, or plugin behavior — verify in docs first
+
 ## What This Is
 
 A personal Neovim configuration built on [LazyVim](https://lazyvim.github.io/) (the LazyVim starter template). It also has a separate VSCode-Neovim mode (`config/vscode.lua`).
@@ -42,3 +49,5 @@ Next nvim launch will re-bootstrap lazy.nvim and reinstall everything.
 ## Adding a New Plugin Override
 
 Create `lua/plugins/<plugin-name>.lua` returning a lazy.nvim spec table. The `opts` table deep-merges with LazyVim's defaults — you only need to specify what you're changing.
+
+**Important**: Before adding a new plugin spec, check existing files in `lua/plugins/` to avoid duplicating specs. For example, Mason's `ensure_installed` should be added to the existing `mason.lua` rather than creating a second Mason spec in another file. Duplicate specs with different repo names (e.g. old vs new org) cause warnings.

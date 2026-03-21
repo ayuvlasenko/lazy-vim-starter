@@ -1,6 +1,6 @@
 -- vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = "Scroll and center screen" })
 -- vim.keymap.set("n", "<C-u>", "<C-u>zz", { desc = "Scroll and center screen" })
-vim.keymap.set("n", "<C-j>", "i<CR><Esc>^", { desc = "Break a line" })
+vim.keymap.set("n", "<leader>J", "i<CR><Esc>^", { desc = "Split line" })
 
 vim.keymap.set("n", "<leader>cw", function()
   local word = vim.fn.expand("<cword>")
