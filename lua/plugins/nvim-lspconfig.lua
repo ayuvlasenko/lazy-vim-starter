@@ -2,7 +2,7 @@ return {
   "neovim/nvim-lspconfig",
   opts = {
     servers = {
-      prismals = {},
+      graphql = {},
       vtsls = {
         settings = {
           javascript = {

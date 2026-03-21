@@ -13,7 +13,7 @@ return {
       "markdown",
       "markdown_inline",
       "terraform",
-      "prisma",
+      "graphql",
     },
   },
 }

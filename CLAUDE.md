@@ -10,6 +10,7 @@ Before implementing fixes or new features, always check the official docs first:
 - [LazyVim docs](https://www.lazyvim.org/) for extras, plugin specs, and keymaps
 - Plugin-specific docs (GitHub README, wiki) for configuration options
 - Never guess at option names, API calls, or plugin behavior — verify in docs first
+- Do not ask the user to "try restarting" or "check if X works" again if nothing has changed since the last attempt — instead, investigate the issue or propose a concrete fix
 
 ## What This Is
 
@@ -30,11 +31,12 @@ Plugin customizations are **overrides on top of LazyVim**, not standalone config
 
 ## Key Customizations
 
-- **TypeScript/JavaScript**: 4-space tabs (autocmd in `autocmds.lua`), vtsls with 16GB memory limit, Prisma LSP enabled.
+- **TypeScript/JavaScript**: 4-space tabs (autocmd in `autocmds.lua`), vtsls with 16GB memory limit.
 - **Spell checking**: Disabled by default (`spell = false`), configured for en_us + ru with camel-case awareness. cspell runs via nvim-lint on all file types. Global cspell config lives at `~/.cspell.json` (must be in `~` — cspell searches upward from cwd). Custom dictionary at `~/.config/cspell/custom-words.txt`. `<leader>cw` keymap adds word under cursor to the dictionary. nvim-lint does not support code actions, so this keymap is the workaround.
 - **blink.cmp**: Uses Lua fuzzy implementation (not native) to avoid macOS crashes.
-- **Neo-tree**: `h`/`l` for vim-style directory navigation, hidden files visible, narrow 35-col window.
+- **Snacks explorer**: Replaced Neo-tree. Hidden files visible, search input auto-hides, Esc in search returns to file list.
 - **Snacks**: Scroll animation disabled.
+- **grug-far**: Opens in a new tab (`tab split`) instead of vertical split.
 
 ## Clean Reset
 
