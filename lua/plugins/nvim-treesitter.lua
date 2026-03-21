@@ -1,6 +1,7 @@
 return {
   "nvim-treesitter/nvim-treesitter",
   opts = {
+    install = { quiet = true },
     ensure_installed = {
       "vim",
       "vimdoc",
