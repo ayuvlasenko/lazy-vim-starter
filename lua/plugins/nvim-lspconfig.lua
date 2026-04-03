@@ -11,7 +11,9 @@ return {
             },
             updateImportsOnFileMove = { enabled = "always" },
             preferences = {
-              autoImportFileExcludePatterns = { "**/dist/**", "**/build/**" },
+              includePackageJsonAutoImports = "on",
+              importModuleSpecifierEnding = "minimal",
+              autoImportFileExcludePatterns = { "apps/*/dist", "apps/*/build" },
             },
           },
           typescript = {
@@ -20,7 +22,9 @@ return {
             },
             updateImportsOnFileMove = { enabled = "always" },
             preferences = {
-              autoImportFileExcludePatterns = { "**/dist/**", "**/build/**" },
+              includePackageJsonAutoImports = "on",
+              importModuleSpecifierEnding = "minimal",
+              autoImportFileExcludePatterns = { "apps/*/dist", "apps/*/build" },
             },
           },
         },

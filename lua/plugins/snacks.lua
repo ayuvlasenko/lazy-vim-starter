@@ -1,11 +1,31 @@
 return {
   "snacks.nvim",
+  keys = {
+    { "<leader>fy", function() Snacks.terminal("yazi", { cwd = LazyVim.root() }) end, desc = "Yazi (Root Dir)" },
+    { "<leader>fY", function() Snacks.terminal("yazi", { cwd = vim.uv.cwd() }) end, desc = "Yazi (cwd)" },
+  },
   opts = {
     scroll = { enabled = false },
+    zen = {
+      toggles = {
+        dim = false,
+      },
+      show = {
+        statusline = true,
+        tabline = true,
+      },
+    },
     picker = {
       sources = {
+        files = {
+          hidden = true,
+        },
+        grep = {
+          hidden = true,
+        },
         explorer = {
           hidden = true,
+          ignored = true,
           layout = {
             auto_hide = { "input" },
           },
@@ -32,8 +52,8 @@ return {
             list = {
               keys = {
                 ["<Esc>"] = { "", mode = "n" },
-                ["y"] = { "yank_relative_cwd", mode = "n" },
-                ["Y"] = { "yank_absolute", mode = "n" },
+                ["gy"] = { "yank_relative_cwd", mode = "n" },
+                ["gY"] = { "yank_absolute", mode = "n" },
               },
             },
           },

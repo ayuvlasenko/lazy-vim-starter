@@ -1,10 +1,5 @@
 vim.opt.relativenumber = true
 vim.opt.number = true
-vim.opt.spell = false
-vim.opt.spelllang = { "en_us", "ru" }
-vim.opt.spelloptions = "camel"
--- don't check for capital letters at start of sentence
-vim.opt.spellcapcheck = ""
 vim.opt.signcolumn = "yes"
 vim.opt.wrap = false
 vim.opt.so = 5

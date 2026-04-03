@@ -4,12 +4,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Working Rules
 
-**IMPORTANT: Before suggesting ANY configuration option, keybinding, or plugin setting, you MUST verify it exists by checking the internet (official docs, GitHub README, GitHub issues/discussions, or source code). NEVER guess or infer option names, key mappings, or behavior. If you cannot verify it, say so explicitly instead of guessing.**
+Here is link https://example.com
 
-Before implementing fixes or new features, always check the official docs first:
+When writing or modifying config code, verify option names and plugin APIs in the official docs before using them. If unsure about an option, say so instead of guessing. But for general advice, navigation tips, or well-known features — just answer directly without looking things up.
+
 - [LazyVim docs](https://www.lazyvim.org/) for extras, plugin specs, and keymaps
 - Plugin-specific docs (GitHub README, wiki) for configuration options
-- Never guess at option names, API calls, or plugin behavior — verify in docs first
 - Do not ask the user to "try restarting" or "check if X works" again if nothing has changed since the last attempt — instead, investigate the issue or propose a concrete fix
 
 ## What This Is
@@ -55,3 +55,7 @@ Next nvim launch will re-bootstrap lazy.nvim and reinstall everything.
 Create `lua/plugins/<plugin-name>.lua` returning a lazy.nvim spec table. The `opts` table deep-merges with LazyVim's defaults — you only need to specify what you're changing.
 
 **Important**: Before adding a new plugin spec, check existing files in `lua/plugins/` to avoid duplicating specs. For example, Mason's `ensure_installed` should be added to the existing `mason.lua` rather than creating a second Mason spec in another file. Duplicate specs with different repo names (e.g. old vs new org) cause warnings.
+
+## Rules
+
+- **CRITICAL** do not use `python` to manipulate json, use `jq`
