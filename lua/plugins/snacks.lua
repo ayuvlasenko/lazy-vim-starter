@@ -5,6 +5,11 @@ return {
     { "<leader>fY", function() Snacks.terminal("yazi", { cwd = vim.uv.cwd() }) end, desc = "Yazi (cwd)" },
   },
   opts = {
+    styles = {
+      zen = {
+        backdrop = { transparent = false, blend = 75 },
+      },
+    },
     scroll = { enabled = false },
     zen = {
       toggles = {
