@@ -12,3 +12,4 @@ vim.opt.title = true
 vim.opt.titlestring = [[%{fnamemodify(getcwd(), ':t')}]]
 
 vim.g.mapleader = " "
+vim.g.maplocalleader = "\\"
