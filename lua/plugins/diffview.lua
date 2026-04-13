@@ -11,10 +11,10 @@ return {
       file_panel = { q = "<cmd>DiffviewClose<cr>" },
       file_history_panel = { q = "<cmd>DiffviewClose<cr>" },
     },
-    view = {
-      default = { layout = "diff2_vertical" },
-      file_history = { layout = "diff2_vertical" },
-    },
+    -- view = {
+    --   default = { layout = "diff2_vertical" },
+    --   file_history = { layout = "diff2_vertical" },
+    -- },
     file_panel = {
       win_config = {
         width = 40,
