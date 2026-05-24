@@ -6,10 +6,16 @@ return {
       -- disable markdownlint-cli2 from markdown extra
       markdown = {},
     },
-    -- linters = {
-    --   ["markdownlint-cli2"] = {
-    --     prepend_args = { "--config", vim.fn.expand("~/.markdownlint.jsonc"), "--" },
-    --   },
-    -- },
+    linters = {
+      cspell = {
+        condition = function()
+          local ft = vim.bo.filetype
+          return ft ~= "env" and ft ~= "json"
+        end,
+      },
+      -- ["markdownlint-cli2"] = {
+      --   prepend_args = { "--config", vim.fn.expand("~/.markdownlint.jsonc"), "--" },
+      -- },
+    },
   },
 }

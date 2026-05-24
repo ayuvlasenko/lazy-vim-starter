@@ -23,10 +23,10 @@ vim.filetype.add({
   --   ["~/%.config/foo/.*"] = "fooscript",
   -- },
   filename = {
-    [".env"] = "dotenv",
+    -- [".env"] = "dotenv",
     ["docker-compose.yaml"] = "yaml.docker-compose",
   },
-  pattern = {
-    ["%.env%.[%w_.-]+"] = "dotenv",
-  },
+  -- pattern = {
+  --   ["%.env%.[%w_.-]+"] = "dotenv",
+  -- },
 })
