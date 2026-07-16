@@ -12,7 +12,6 @@ return {
       "tsx",
       "markdown",
       "markdown_inline",
-      "terraform",
       "graphql",
     },
   },
