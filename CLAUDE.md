@@ -23,7 +23,7 @@ Lua files are formatted with [StyLua](https://github.com/JohnnyMorganz/StyLua): 
 ## Architecture
 
 - `init.lua` — Entry point. Branches between VSCode mode (`config/vscode`) and full Neovim mode (`config/lazy`).
-- `lua/config/lazy.lua` — Bootstraps lazy.nvim and defines the plugin spec. LazyVim extras enabled: prettier, eslint, docker, json, terraform, typescript, yaml.
+- `lua/config/lazy.lua` — Bootstraps lazy.nvim and defines the plugin spec. LazyVim extras enabled: prettier, eslint, docker, json, typescript, yaml, helm, dap.core, markdown.
 - `lua/config/` — Options, keymaps, autocmds. These extend/override LazyVim defaults.
 - `lua/plugins/` — Per-plugin override files. Each returns a lazy.nvim plugin spec that merges with LazyVim's defaults via `opts`.
 
