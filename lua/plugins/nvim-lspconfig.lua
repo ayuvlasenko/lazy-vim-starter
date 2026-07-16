@@ -2,6 +2,23 @@ return {
   "neovim/nvim-lspconfig",
   opts = {
     servers = {
+      ["*"] = {
+        keys = {
+          { "<leader>co", false },
+          {
+            "<leader>ci",
+            LazyVim.lsp.action["source.organizeImports"],
+            desc = "Organize Imports",
+            has = "codeAction",
+            enabled = function(buf)
+              local actions = vim.tbl_filter(function(action)
+                return action:find("^source%.organizeImports%.?$")
+              end, LazyVim.lsp.code_actions({ bufnr = buf }))
+              return #actions > 0
+            end,
+          },
+        },
+      },
       graphql = {},
       vtsls = {
         settings = {
