@@ -4,6 +4,14 @@ return {
   keys = {
     { "<leader>gv", "<cmd>DiffviewOpen<cr>", desc = "Diffview: changed files" },
     { "<leader>gV", "<cmd>DiffviewFileHistory %<cr>", desc = "Diffview: file history" },
+    { "<leader>gw", ":DiffviewOpen ", desc = "Diffview: vs branch/rev" },
+    -- Prefill `:DiffviewOpen <branch>...HEAD --imply-local`, cursor parked before
+    -- `...HEAD` so you just type the branch (native rev completion still works).
+    {
+      "<leader>gm",
+      ":DiffviewOpen ...HEAD --imply-local" .. ("<Left>"):rep(#"...HEAD --imply-local"),
+      desc = "Diffview: <branch>...HEAD (merge-base)",
+    },
   },
   opts = {
     keymaps = {

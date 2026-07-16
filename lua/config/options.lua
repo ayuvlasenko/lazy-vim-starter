@@ -10,6 +10,7 @@ vim.opt.colorcolumn = "81"
 vim.opt.belloff = "all"
 vim.opt.title = true
 vim.opt.titlestring = [[%{fnamemodify(getcwd(), ':t')}]]
+vim.opt.diffopt:append("algorithm:histogram")
 
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
