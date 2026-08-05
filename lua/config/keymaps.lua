@@ -2,6 +2,10 @@
 -- vim.keymap.set("n", "<C-u>", "<C-u>zz", { desc = "Scroll and center screen" })
 vim.keymap.set("n", "<leader>J", "i<CR><Esc>^", { desc = "Split line" })
 
+vim.keymap.set("n", "<leader>ba", function()
+  Snacks.bufdelete.all()
+end, { desc = "Delete All Buffers" })
+
 vim.keymap.set("n", "<leader>cw", function()
   local word = vim.fn.expand("<cword>")
   local dict = vim.fn.expand("~/.config/cspell/custom-words.txt")
