@@ -5,6 +5,91 @@ vim.api.nvim_create_autocmd("BufEnter", {
   pattern = { "*.ts", "*.tsx", "*.js", "*.jsx" },
   command = "setlocal tabstop=4 shiftwidth=4",
 })
+local autosave = vim.api.nvim_create_augroup("autosave_on_focus_lost", { clear = true })
+local skipped_on_conflict = {}
+
+local function track_disk_mtime(args)
+  if vim.api.nvim_buf_get_name(args.buf) ~= "" then
+    vim.b[args.buf].disk_mtime_at_last_sync = vim.fn.getftime(vim.api.nvim_buf_get_name(args.buf))
+  end
+end
+
+local function is_autosavable(buf)
+  return vim.api.nvim_buf_is_valid(buf)
+    and vim.bo[buf].modified
+    and vim.bo[buf].modifiable
+    and not vim.bo[buf].readonly
+    and vim.bo[buf].buftype == ""
+    and vim.api.nvim_buf_get_name(buf) ~= ""
+end
+
+local function conflicts_with_disk(buf)
+  local known = vim.b[buf].disk_mtime_at_last_sync
+  return known ~= nil and vim.fn.getftime(vim.api.nvim_buf_get_name(buf)) ~= known
+end
+
+local function relative_name(buf)
+  return vim.fn.fnamemodify(vim.api.nvim_buf_get_name(buf), ":~:.")
+end
+
+local function autosave_buffer(buf)
+  if not is_autosavable(buf) then
+    return
+  end
+  if conflicts_with_disk(buf) then
+    skipped_on_conflict[buf] = relative_name(buf)
+    vim.notify(
+      "autosave skipped, file changed on disk:\n" .. relative_name(buf),
+      vim.log.levels.WARN,
+      { title = "autosave" }
+    )
+    return
+  end
+  vim.api.nvim_buf_call(buf, function()
+    vim.cmd("update")
+  end)
+end
+
+vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile", "BufWritePost" }, {
+  group = autosave,
+  callback = track_disk_mtime,
+})
+
+vim.api.nvim_create_autocmd("FocusLost", {
+  group = autosave,
+  callback = function()
+    vim.iter(vim.api.nvim_list_bufs()):each(autosave_buffer)
+  end,
+})
+
+vim.api.nvim_create_autocmd("BufLeave", {
+  group = autosave,
+  callback = function(args)
+    autosave_buffer(args.buf)
+  end,
+})
+
+vim.api.nvim_create_autocmd("FocusGained", {
+  group = autosave,
+  callback = function()
+    local unresolved = {}
+    for buf, name in pairs(skipped_on_conflict) do
+      if is_autosavable(buf) and conflicts_with_disk(buf) then
+        table.insert(unresolved, name)
+      else
+        skipped_on_conflict[buf] = nil
+      end
+    end
+    if #unresolved > 0 then
+      vim.notify(
+        "unsaved buffers conflicting with disk:\n" .. table.concat(unresolved, "\n"),
+        vim.log.levels.WARN,
+        { title = "autosave" }
+      )
+    end
+  end,
+})
+
 vim.treesitter.language.register("bash", "dotenv")
 vim.filetype.add({
   -- extension = {
