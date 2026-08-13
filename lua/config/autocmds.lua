@@ -50,6 +50,36 @@ local function autosave_buffer(buf)
   end)
 end
 
+local function show_disk_diff(buf)
+  if not vim.api.nvim_buf_is_valid(buf) then
+    return
+  end
+  local name = vim.api.nvim_buf_get_name(buf)
+  local windows = vim.fn.win_findbuf(buf)
+  if #windows > 0 then
+    vim.api.nvim_set_current_win(windows[1])
+  else
+    vim.cmd("tab split")
+    vim.api.nvim_set_current_buf(buf)
+  end
+  vim.cmd("diffthis")
+  vim.cmd("vertical new")
+  vim.bo.buftype = "nofile"
+  vim.bo.bufhidden = "wipe"
+  vim.bo.swapfile = false
+  vim.cmd("read ++edit " .. vim.fn.fnameescape(name))
+  vim.cmd("0delete _")
+  pcall(vim.api.nvim_buf_set_name, 0, relative_name(buf) .. " [disk]")
+  vim.bo.modified = false
+  vim.cmd("diffthis")
+  vim.cmd("wincmd p")
+  vim.b[buf].disk_diff_shown = true
+end
+
+vim.api.nvim_create_user_command("AutosaveDiskDiff", function()
+  show_disk_diff(vim.api.nvim_get_current_buf())
+end, { desc = "Diff the current buffer against the file on disk" })
+
 vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile", "BufWritePost" }, {
   group = autosave,
   callback = track_disk_mtime,
@@ -75,18 +105,34 @@ vim.api.nvim_create_autocmd("FocusGained", {
     local unresolved = {}
     for buf, name in pairs(skipped_on_conflict) do
       if is_autosavable(buf) and conflicts_with_disk(buf) then
-        table.insert(unresolved, name)
+        table.insert(unresolved, { buf = buf, name = name })
       else
+        if vim.api.nvim_buf_is_valid(buf) then
+          vim.b[buf].disk_diff_shown = nil
+        end
         skipped_on_conflict[buf] = nil
       end
     end
-    if #unresolved > 0 then
-      vim.notify(
-        "unsaved buffers conflicting with disk:\n" .. table.concat(unresolved, "\n"),
-        vim.log.levels.WARN,
-        { title = "autosave" }
-      )
+    if #unresolved == 0 then
+      return
     end
+    vim.notify("unsaved buffers conflicting with disk:\n" .. table.concat(
+      vim.tbl_map(function(entry)
+        return entry.name
+      end, unresolved),
+      "\n"
+    ), vim.log.levels.WARN, { title = "autosave" })
+    vim.schedule(function()
+      if vim.fn.mode() ~= "n" then
+        return
+      end
+      for _, entry in ipairs(unresolved) do
+        if is_autosavable(entry.buf) and not vim.b[entry.buf].disk_diff_shown then
+          show_disk_diff(entry.buf)
+          return
+        end
+      end
+    end)
   end,
 })
 
