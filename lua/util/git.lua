@@ -4,46 +4,59 @@ function M.root()
   return vim.fs.root(0, ".git") or vim.fs.root(assert(vim.uv.cwd()), ".git")
 end
 
-function M.deleted_paths(root)
-  local args = {
-    "git",
-    "-C",
-    root,
-    "log",
-    "--all",
-    "--diff-filter=D",
-    "--name-only",
-    "--pretty=format:",
-  }
-  local log = vim.fn.systemlist(args)
+local function git_lines(root, args)
+  local cmd = { "git", "-C", root }
+  vim.list_extend(cmd, args)
+  local lines = vim.fn.systemlist(cmd)
   if vim.v.shell_error ~= 0 then
-    return {}
+    return nil
   end
-
-  local seen, paths = {}, {}
-  for _, path in ipairs(log) do
-    if path ~= "" and not seen[path] then
-      seen[path] = true
-      paths[#paths + 1] = path
-    end
-  end
-  return paths
+  return lines
 end
 
-function M.blob_before_deletion(root, path)
-  local sha = vim.fn.systemlist({ "git", "-C", root, "rev-list", "-n", "1", "--all", "--", path })[1]
+function M.deleted_entries(root)
+  local seen, entries = {}, {}
+
+  local function add(path, object, label)
+    if path ~= "" and not seen[path] then
+      seen[path] = true
+      entries[#entries + 1] = { path = path, object = object, label = label }
+    end
+  end
+
+  for _, path in ipairs(git_lines(root, { "diff", "--diff-filter=D", "--name-only" }) or {}) do
+    add(path, ":" .. path, "index")
+  end
+  for _, path in ipairs(git_lines(root, { "diff", "--cached", "--diff-filter=D", "--name-only" }) or {}) do
+    add(path, "HEAD:" .. path, "HEAD")
+  end
+  local log = git_lines(root, { "log", "--all", "--diff-filter=D", "--name-only", "--pretty=format:" })
+  for _, path in ipairs(log or {}) do
+    add(path)
+  end
+
+  return entries
+end
+
+function M.resolve_entry(root, entry)
+  if entry.object then
+    return entry
+  end
+  local sha = (git_lines(root, { "rev-list", "-n", "1", "--all", "--", entry.path }) or {})[1]
   if not sha or sha == "" then
     return nil
   end
-  local lines = vim.fn.systemlist({ "git", "-C", root, "show", sha .. "^:" .. path })
-  if vim.v.shell_error ~= 0 then
-    return nil
-  end
-  return sha, lines
+  entry.object = sha .. "^:" .. entry.path
+  entry.label = sha:sub(1, 7)
+  return entry
 end
 
-function M.open_blob(sha, path, lines, ft)
-  local name = ("git://%s/%s"):format(sha:sub(1, 7), path)
+function M.read_blob(root, object)
+  return git_lines(root, { "show", object })
+end
+
+function M.open_blob(path, label, lines, ft)
+  local name = ("git://%s/%s"):format(label, path)
   local buf = vim.fn.bufnr(name)
   if buf == -1 then
     buf = vim.api.nvim_create_buf(true, true)
