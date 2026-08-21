@@ -58,7 +58,13 @@ return {
       },
     },
     keys = {
-      { "<leader>dT", function() require("dapui").toggle({ layout = 2 }) end, desc = "Toggle DAP Tray" },
+      {
+        "<leader>dT",
+        function()
+          require("dapui").toggle({ layout = 2 })
+        end,
+        desc = "Toggle DAP Tray",
+      },
     },
     config = function(_, opts)
       local dap = require("dap")
