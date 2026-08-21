@@ -1,5 +1,6 @@
 return {
   "neovim/nvim-lspconfig",
+  cond = vim.env.NVIM_LIGHT == nil,
   opts = {
     servers = {
       ["*"] = {
