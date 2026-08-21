@@ -2,24 +2,21 @@ local git = require("util.git")
 
 local M = {}
 
-local deleted_files_limit = 100
-
-local function deleted_file_items(root, search)
-  local items = {}
-  for _, path in ipairs(git.deleted_paths(root, search, deleted_files_limit)) do
-    items[#items + 1] = {
-      text = path,
-      ft = vim.filetype.match({ filename = path }),
-      resolve = function(item)
-        local sha, lines = git.blob_before_deletion(root, path)
-        item.sha, item.lines = sha, lines
-        item.preview = {
-          text = lines and table.concat(lines, "\n") or ("Could not read " .. path),
-          ft = item.ft or "text",
-          loc = false,
-        }
-      end,
+local function deleted_file_items(root)
+  local function resolve(item)
+    item.ft = vim.filetype.match({ filename = item.text })
+    local sha, lines = git.blob_before_deletion(root, item.text)
+    item.sha, item.lines = sha, lines
+    item.preview = {
+      text = lines and table.concat(lines, "\n") or ("Could not read " .. item.text),
+      ft = item.ft or "text",
+      loc = false,
     }
+  end
+
+  local items = {}
+  for _, path in ipairs(git.deleted_paths(root)) do
+    items[#items + 1] = { text = path, resolve = resolve }
   end
   return items
 end
@@ -33,10 +30,7 @@ function M.deleted_files()
 
   Snacks.picker.pick({
     title = "Deleted Files",
-    live = true,
-    supports_live = true,
-    limit = deleted_files_limit,
-    limit_live = deleted_files_limit,
+    items = deleted_file_items(root),
     preview = "preview",
     format = function(item, picker)
       local icon, hl = Snacks.util.icon(item.text, "file", { fallback = picker.opts.icons.files })
@@ -44,9 +38,6 @@ function M.deleted_files()
         { Snacks.picker.util.align(icon, 2), hl, virtual = true },
         { item.text, "SnacksPickerFile" },
       }
-    end,
-    finder = function(_, ctx)
-      return deleted_file_items(root, ctx.filter.search)
     end,
     confirm = function(picker, item)
       picker:close()

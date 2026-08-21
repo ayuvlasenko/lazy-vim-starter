@@ -4,7 +4,7 @@ function M.root()
   return vim.fs.root(0, ".git") or vim.fs.root(assert(vim.uv.cwd()), ".git")
 end
 
-function M.deleted_paths(root, search, limit)
+function M.deleted_paths(root)
   local args = {
     "git",
     "-C",
@@ -15,11 +15,6 @@ function M.deleted_paths(root, search, limit)
     "--name-only",
     "--pretty=format:",
   }
-  if search ~= "" then
-    args[#args + 1] = "--"
-    args[#args + 1] = ":(icase)*" .. search .. "*"
-  end
-
   local log = vim.fn.systemlist(args)
   if vim.v.shell_error ~= 0 then
     return {}
@@ -30,9 +25,6 @@ function M.deleted_paths(root, search, limit)
     if path ~= "" and not seen[path] then
       seen[path] = true
       paths[#paths + 1] = path
-      if #paths >= limit then
-        break
-      end
     end
   end
   return paths
