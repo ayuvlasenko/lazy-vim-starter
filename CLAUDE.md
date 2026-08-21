@@ -14,7 +14,7 @@ When writing or modifying config code, verify option names and plugin APIs in th
 
 ## What This Is
 
-A personal Neovim configuration built on [LazyVim](https://lazyvim.github.io/) (the LazyVim starter template). It also has a separate VSCode-Neovim mode (`config/vscode.lua`).
+A personal Neovim configuration built on [LazyVim](https://lazyvim.github.io/) (the LazyVim starter template).
 
 ## Formatting
 
@@ -22,7 +22,7 @@ Lua files are formatted with [StyLua](https://github.com/JohnnyMorganz/StyLua): 
 
 ## Architecture
 
-- `init.lua` — Entry point. Branches between VSCode mode (`config/vscode`) and full Neovim mode (`config/lazy`).
+- `init.lua` — Entry point. Loads `config/lazy`.
 - `lua/config/lazy.lua` — Bootstraps lazy.nvim and defines the plugin spec. LazyVim extras enabled: prettier, eslint, docker, json, typescript, yaml, helm, dap.core, markdown.
 - `lua/config/` — Options, keymaps, autocmds. These extend/override LazyVim defaults.
 - `lua/plugins/` — Per-plugin override files. Each returns a lazy.nvim plugin spec that merges with LazyVim's defaults via `opts`.
@@ -32,7 +32,7 @@ Plugin customizations are **overrides on top of LazyVim**, not standalone config
 
 ## Key Customizations
 
-- **TypeScript/JavaScript**: 4-space tabs (autocmd in `autocmds.lua`), vtsls with 16GB memory limit.
+- **TypeScript/JavaScript**: 4-space tabs (FileType autocmd in `autocmds.lua`), vtsls with 16GB memory limit.
 - **Spell checking**: Disabled by default (`spell = false`), configured for en_us + ru with camel-case awareness. cspell runs via nvim-lint on all file types. Global cspell config lives at `~/.cspell.json` (must be in `~` — cspell searches upward from cwd). Custom dictionary at `~/.config/cspell/custom-words.txt`. `<leader>cw` keymap adds word under cursor to the dictionary. nvim-lint does not support code actions, so this keymap is the workaround.
 - **blink.cmp**: Uses Lua fuzzy implementation (not native) to avoid macOS crashes.
 - **Snacks explorer**: Replaced Neo-tree. Hidden files visible, search input auto-hides, Esc in search returns to file list.
