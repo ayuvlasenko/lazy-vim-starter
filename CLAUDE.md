@@ -26,6 +26,7 @@ Lua files are formatted with [StyLua](https://github.com/JohnnyMorganz/StyLua): 
 - `lua/config/lazy.lua` — Bootstraps lazy.nvim and defines the plugin spec. LazyVim extras enabled: prettier, eslint, docker, json, typescript, yaml, helm, dap.core, markdown.
 - `lua/config/` — Options, keymaps, autocmds. These extend/override LazyVim defaults.
 - `lua/plugins/` — Per-plugin override files. Each returns a lazy.nvim plugin spec that merges with LazyVim's defaults via `opts`.
+- `lua/util/` — Shared helper modules, required by keymaps and plugin specs (e.g. `require("util.git")`).
 
 Plugin customizations are **overrides on top of LazyVim**, not standalone configs. To understand the full behavior of any plugin, check the corresponding [LazyVim plugin spec](https://github.com/LazyVim/LazyVim/tree/main/lua/lazyvim/plugins) first, then look at the local override.
 

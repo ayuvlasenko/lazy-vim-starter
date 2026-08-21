@@ -1,8 +1,33 @@
+local function yank_path(path)
+  vim.fn.setreg("+", path)
+  vim.fn.setreg('"', path)
+  vim.notify("Yanked: " .. path)
+end
+
 return {
   "snacks.nvim",
   keys = {
-    { "<leader>fy", function() Snacks.terminal("yazi", { cwd = LazyVim.root() }) end, desc = "Yazi (Root Dir)" },
-    { "<leader>fY", function() Snacks.terminal("yazi", { cwd = vim.uv.cwd() }) end, desc = "Yazi (cwd)" },
+    {
+      "<leader>fy",
+      function()
+        Snacks.terminal("yazi", { cwd = LazyVim.root() })
+      end,
+      desc = "Yazi (Root Dir)",
+    },
+    {
+      "<leader>fY",
+      function()
+        Snacks.terminal("yazi", { cwd = vim.uv.cwd() })
+      end,
+      desc = "Yazi (cwd)",
+    },
+    {
+      "<leader>gx",
+      function()
+        require("util.picker").deleted_files()
+      end,
+      desc = "Deleted files (git)",
+    },
   },
   opts = {
     styles = {
@@ -36,16 +61,10 @@ return {
           },
           actions = {
             yank_relative_cwd = function(_, item)
-              local path = vim.fn.fnamemodify(item.file, ":.")
-              vim.fn.setreg("+", path)
-              vim.fn.setreg('"', path)
-              vim.notify("Yanked: " .. path)
+              yank_path(vim.fn.fnamemodify(item.file, ":."))
             end,
             yank_absolute = function(_, item)
-              local path = item.file
-              vim.fn.setreg("+", path)
-              vim.fn.setreg('"', path)
-              vim.notify("Yanked: " .. path)
+              yank_path(item.file)
             end,
           },
           win = {
