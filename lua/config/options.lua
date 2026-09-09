@@ -15,3 +15,4 @@ vim.opt.sessionoptions:append("localoptions")
 
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
+vim.g.lazyvim_ts_lsp = "tsc"

@@ -21,23 +21,9 @@ return {
         },
       },
       graphql = {},
-      vtsls = {
+      tsc = {
         settings = {
-          javascript = {
-            tsserver = {
-              maxTsServerMemory = 16184,
-            },
-            updateImportsOnFileMove = { enabled = "always" },
-            preferences = {
-              includePackageJsonAutoImports = "on",
-              importModuleSpecifierEnding = "minimal",
-              autoImportFileExcludePatterns = { "apps/*/dist", "apps/*/build" },
-            },
-          },
-          typescript = {
-            tsserver = {
-              maxTsServerMemory = 16184,
-            },
+          ["js/ts"] = {
             updateImportsOnFileMove = { enabled = "always" },
             preferences = {
               includePackageJsonAutoImports = "on",
